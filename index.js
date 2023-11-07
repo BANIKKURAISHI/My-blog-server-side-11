@@ -47,12 +47,51 @@ async function run() {
      res.send(result)
      
    })
+ 
+ app.patch('/blogs/:id',async(req,res)=>{
+   const id =req.params.id 
+   const query ={_id:new ObjectId(id)}
+   console.log(query)
+   const option={upsert:true}
+   const update=req.body
+   const document ={
+     $set:{
+       title:update.title,
+       image:update.image,
+       short_description:update.short_description,
+       category:update.category,
+       full_description:update.full_description,
+       author:update.author,
+       date_published:update.date_published,
+       source:update.source
+     }
+   }  
+   const result =await blogCollection.updateOne(query ,document,option)
+   res.send(result)
+   console.log(result)
+ })
+
+
+
    app.post('/popular',async(req,res)=>{
     const body =req.body 
     const result =await popularCollection.insertOne(body)
     res.send(result)
      
    })
+   app.get('/popular',async(req,res)=>{
+    const result=await popularCollection.find().toArray()
+    res.send(result)
+   })
+   
+   app.delete('/popular/:id',async(req,res)=>{
+    const id=req.params.id
+    const query ={_id:new ObjectId(id)}
+    const result=await popularCollection.deleteOne(query)
+    res.send(result)
+   })
+
+
     
     
     await client.db("admin").command({ ping: 1 });
