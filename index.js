@@ -51,7 +51,7 @@ async function run() {
  app.patch('/blogs/:id',async(req,res)=>{
    const id =req.params.id 
    const query ={_id:new ObjectId(id)}
-   console.log(query)
+ 
    const option={upsert:true}
    const update=req.body
    const document ={
@@ -68,7 +68,7 @@ async function run() {
    }  
    const result =await blogCollection.updateOne(query ,document,option)
    res.send(result)
-   console.log(result)
+   
  })
 
 
