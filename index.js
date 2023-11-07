@@ -83,7 +83,12 @@ async function run() {
     const result=await popularCollection.find().toArray()
     res.send(result)
    })
+   app.get('/blog',async(req,res)=>{
+    const result=await blogCollection.find().sort({_id:-1}).limit(6).toArray()
+    res.send(result)
    
+   })
+   // const last6Cards = await collection.find().sort({ _id: -1 }).limit(6).toArray();
    app.delete('/popular/:id',async(req,res)=>{
     const id=req.params.id
     const query ={_id:new ObjectId(id)}
