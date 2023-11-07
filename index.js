@@ -38,8 +38,16 @@ async function run() {
     const result=await blogCollection.findOne(query)
     res.send(result)
    })
+    app.get('/all/:category',async(req,res)=>{
+     const category=req.params.category
+     const query={category:category}
+     const result=await blogCollection.find(query).toArray()
+     res.send(result)
+    console.log(result)
+    })
 
-   /////////////add blogs 
+
+   ///////////add blogs 
    app.post('/blogs',async(req,res)=>{
     const body =req.body 
     
@@ -71,6 +79,7 @@ async function run() {
    
  })
 
+ //db.collectionName..sort({ length: -1 }).limit(10)
 
 
    app.post('/popular',async(req,res)=>{
@@ -79,6 +88,7 @@ async function run() {
     res.send(result)
      
    })
+  
    app.get('/popular',async(req,res)=>{
     const result=await popularCollection.find().toArray()
     res.send(result)
@@ -88,7 +98,19 @@ async function run() {
     res.send(result)
    
    })
-   // const last6Cards = await collection.find().sort({ _id: -1 }).limit(6).toArray();
+
+   app.get('/details',async(req,res)=>{
+    // const result = await blogCollection.find({
+    //   "full_description": { $exists: true },
+    //   $expr: { $gt: [{ $strLenCP: "$full_description" }, 5] }
+    //  }).sort({ length: -1 }).limit(5).toArray();
+    const result =await blogCollection.find({"full_description":{$exists:true},
+     $expr:{$gt:[{$strLenCP:"$full_description"},10]}}).sort({length:-1}).limit(10).toArray()
+     res.send(result)
+   
+   })
+
+ 
    app.delete('/popular/:id',async(req,res)=>{
     const id=req.params.id
     const query ={_id:new ObjectId(id)}
