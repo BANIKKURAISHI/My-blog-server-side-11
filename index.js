@@ -27,6 +27,19 @@ async function run() {
    await client.connect();
    const blogCollection =client.db('AllBlogs').collection('allBlogs')
    const popularCollection =client.db('AllBlogs').collection('popularBlogs')
+   const comments =client.db('AllBlogs').collection('comments')
+
+
+ app.post('/comments',async(req,res)=>{
+    const body =req.body 
+    const result =await comments.insertOne(body)
+    res.send(result)
+     
+   })
+
+
+
+
 
    app.get('/blogs',async(req,res)=>{
     const result=await blogCollection.find().toArray()
@@ -43,7 +56,7 @@ async function run() {
      const query={category:category}
      const result=await blogCollection.find(query).toArray()
      res.send(result)
-    console.log(result)
+   
     })
 
 
@@ -99,6 +112,7 @@ async function run() {
    
    })
 
+   
    app.get('/details',async(req,res)=>{
     // const result = await blogCollection.find({
     //   "full_description": { $exists: true },
