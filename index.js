@@ -36,7 +36,10 @@ async function run() {
     res.send(result)
      
    })
-
+app.get('/comments',async(req,res)=>{
+    const result=await comments.find().toArray()
+    res.send(result)
+   })
 
 
 
@@ -92,7 +95,7 @@ async function run() {
    
  })
 
- //db.collectionName..sort({ length: -1 }).limit(10)
+
 
 
    app.post('/popular',async(req,res)=>{
@@ -114,11 +117,7 @@ async function run() {
 
    
    app.get('/details',async(req,res)=>{
-    // const result = await blogCollection.find({
-    //   "full_description": { $exists: true },
-    //   $expr: { $gt: [{ $strLenCP: "$full_description" }, 5] }
-    //  }).sort({ length: -1 }).limit(5).toArray();
-    const result =await blogCollection.find({"full_description":{$exists:true},
+     const result =await blogCollection.find({"full_description":{$exists:true},
      $expr:{$gt:[{$strLenCP:"$full_description"},10]}}).sort({length:-1}).limit(10).toArray()
      res.send(result)
    
